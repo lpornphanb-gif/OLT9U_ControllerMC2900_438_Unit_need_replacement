@@ -57,7 +57,7 @@ def handle_message(event):
     if user_text in SN_SET:
         reply = f"⚠️ SN: {event.message.text.strip()}\nStatus: Need Controller Replacement"
     else:
-        reply = f"✅ SN: {event.message.text.strip()}\nStatus: ไม่พบในรายการ (ปกติ)"
+        reply = f"✅ SN: {event.message.text.strip()}\nStatus: NO Need Replacement (รบกวนพี่ๆทดสอบการใช้งานหน้างานของ Controller ด้วยนะคะ)"
 
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
