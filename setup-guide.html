@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LINE SN Checker Bot — Setup Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --accent: #06b6d4;
+    --accent2: #22c55e;
+    --warn: #f59e0b;
+    --text: #e6edf3;
+    --muted: #7d8590;
+    --line-green: #06C755;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 2rem 1rem;
+  }
+
+  .container { max-width: 780px; margin: 0 auto; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: #06C75520; border: 1px solid #06C75540;
+    color: var(--line-green);
+    padding: .25rem .75rem; border-radius: 99px;
+    font-size: .75rem; font-weight: 600; letter-spacing: .05em;
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem; font-weight: 600;
+    line-height: 1.3;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    color: var(--muted); margin-top: .5rem; font-size: .95rem;
+  }
+
+  .timeline { position: relative; padding-left: 2.5rem; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: .85rem; top: 0; bottom: 0;
+    width: 2px; background: var(--border);
+  }
+
+  .step {
+    position: relative;
+    margin-bottom: 2.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .step-dot {
+    position: absolute; left: -2.5rem;
+    width: 1.7rem; height: 1.7rem;
+    background: var(--accent); border: 3px solid var(--bg);
+    border-radius: 50%; top: 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .7rem; font-weight: 700; color: #000;
+  }
+
+  .step-dot.green { background: var(--line-green); }
+  .step-dot.yellow { background: var(--warn); }
+  .step-dot.done { background: var(--accent2); }
+
+  .step h2 {
+    font-size: 1rem; font-weight: 600;
+    margin-bottom: .75rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+
+  .step p { color: #bcc2c8; font-size: .9rem; margin-bottom: .75rem; }
+  .step p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-block;
+    background: #ffffff10; border: 1px solid var(--border);
+    padding: .1rem .5rem; border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .8rem; color: var(--accent);
+  }
+
+  .note {
+    background: #f59e0b10; border-left: 3px solid var(--warn);
+    padding: .75rem 1rem; border-radius: 0 8px 8px 0;
+    font-size: .85rem; color: #fcd34d;
+    margin-top: .75rem;
+  }
+
+  .success-note {
+    background: #22c55e10; border-left: 3px solid var(--accent2);
+    padding: .75rem 1rem; border-radius: 0 8px 8px 0;
+    font-size: .85rem; color: #86efac;
+    margin-top: .75rem;
+  }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+    background: #ffffff0d; border: 1px solid var(--border);
+    padding: .1rem .4rem; border-radius: 4px;
+    font-size: .82rem; color: #79c0ff;
+  }
+
+  pre {
+    background: #010409;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .82rem;
+    color: #e6edf3;
+    overflow-x: auto;
+    margin-top: .75rem;
+    line-height: 1.6;
+  }
+
+  pre .comment { color: #8b949e; }
+  pre .key { color: #ff7b72; }
+  pre .val { color: #a5d6ff; }
+  pre .green { color: #7ee787; }
+
+  ol { padding-left: 1.25rem; color: #bcc2c8; font-size: .9rem; }
+  ol li { margin-bottom: .4rem; }
+
+  .url-box {
+    background: #010409; border: 1px solid var(--accent);
+    border-radius: 8px; padding: .75rem 1rem;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .85rem; color: var(--accent);
+    margin-top: .75rem; word-break: break-all;
+  }
+
+  .flow {
+    display: flex; align-items: center; gap: .5rem;
+    flex-wrap: wrap; margin-top: .75rem; font-size: .85rem;
+  }
+  .flow-box {
+    background: #ffffff08; border: 1px solid var(--border);
+    padding: .35rem .75rem; border-radius: 6px;
+    font-weight: 500;
+  }
+  .flow-arrow { color: var(--muted); }
+
+  .final {
+    background: linear-gradient(135deg, #06b6d415, #06C75515);
+    border: 1px solid #06b6d430;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  .final h3 { font-size: 1.1rem; margin-bottom: .5rem; }
+  .final p { color: var(--muted); font-size: .9rem; }
+
+  .files-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: .75rem; margin-top: .75rem;
+  }
+  .file-card {
+    background: #010409; border: 1px solid var(--border);
+    border-radius: 8px; padding: .75rem 1rem;
+    font-family: 'IBM Plex Mono', monospace; font-size: .8rem;
+  }
+  .file-card .fname { color: var(--accent); font-weight: 500; }
+  .file-card .fdesc { color: var(--muted); margin-top: .2rem; font-family: 'IBM Plex Sans Thai', sans-serif; font-size: .8rem; }
+
+  @media (max-width: 500px) {
+    .files-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="badge">
+      <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor"><circle cx="5" cy="5" r="5"/></svg>
+      LINE Messaging API
+    </div>
+    <h1>SN Checker Bot<br><span>Setup Guide</span></h1>
+    <p class="subtitle">ทำตามขั้นตอนนี้ครบ ได้ bot พร้อมใช้งานใน ~30 นาที</p>
+  </header>
+
+  <div class="flow">
+    <span class="flow-box">📱 LINE Account</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-box">⚙️ Messaging API</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-box">☁️ Deploy Railway</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-box">🔗 Set Webhook</span>
+    <span class="flow-arrow">→</span>
+    <span class="flow-box">✅ ใช้งานได้</span>
+  </div>
+
+  <br><br>
+
+  <div class="timeline">
+
+    <!-- STEP 1 -->
+    <div class="step">
+      <div class="step-dot green">1</div>
+      <h2>📁 เตรียม File โปรเจกต์</h2>
+      <p>วาง 5 ไฟล์นี้ไว้ใน folder เดียวกัน:</p>
+      <div class="files-grid">
+        <div class="file-card">
+          <div class="fname">app.py</div>
+          <div class="fdesc">Logic หลักของ bot</div>
+        </div>
+        <div class="file-card">
+          <div class="fname">requirements.txt</div>
+          <div class="fdesc">Library ที่ต้องใช้</div>
+        </div>
+        <div class="file-card">
+          <div class="fname">Procfile</div>
+          <div class="fdesc">คำสั่ง start server</div>
+        </div>
+        <div class="file-card">
+          <div class="fname">438_Unit.xlsx</div>
+          <div class="fdesc">ไฟล์ข้อมูล SN ของคุณ</div>
+        </div>
+      </div>
+      <div class="note">⚠️ ชื่อ column SN ในไฟล์ Excel คืออะไร? เปิดดูก่อน แล้วแก้ในไฟล์ <code>.env.example</code> บรรทัด <code>SN_COLUMN=</code></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step">
+      <div class="step-dot green">2</div>
+      <h2>💚 สร้าง LINE Official Account</h2>
+      <ol>
+        <li>ไปที่ <strong>developers.line.biz</strong> → Login ด้วย LINE ส่วนตัว</li>
+        <li>กด <strong>Create a new provider</strong> → ตั้งชื่อ (เช่น "SN Checker")</li>
+        <li>กด <strong>Create a Messaging API channel</strong></li>
+        <li>กรอกข้อมูล → สร้างเสร็จ</li>
+        <li>ไปที่แท็บ <strong>Messaging API</strong> → Copy <span class="tag">Channel Secret</span></li>
+        <li>กด <strong>Issue</strong> ใต้ Channel access token → Copy <span class="tag">Access Token</span></li>
+      </ol>
+      <div class="note">⚠️ เก็บ token ทั้งสองไว้ก่อน จะใช้ใน Step 4</div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step">
+      <div class="step-dot yellow">3</div>
+      <h2>☁️ Deploy ขึ้น Railway (ฟรี)</h2>
+      <ol>
+        <li>ไปที่ <strong>railway.app</strong> → Sign up ด้วย GitHub</li>
+        <li>กด <strong>New Project → Deploy from GitHub repo</strong></li>
+        <li>อัป folder ทั้งหมดขึ้น GitHub ก่อน (ถ้ายังไม่มีให้สร้าง private repo)</li>
+        <li>เลือก repo ที่สร้าง → Railway จะ build อัตโนมัติ</li>
+      </ol>
+      <div class="note">
+        ⚠️ อย่า push ไฟล์ .env จริงขึ้น GitHub! ใส่ token ใน Railway dashboard แทน (ดู Step 4)
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step">
+      <div class="step-dot yellow">4</div>
+      <h2>🔑 ตั้งค่า Environment Variables ใน Railway</h2>
+      <p>ใน Railway dashboard → Project → กด <strong>Variables</strong> → เพิ่มทีละบรรทัด:</p>
+      <pre><span class="key">LINE_CHANNEL_ACCESS_TOKEN</span> = <span class="val">ใส่ token ที่ copy จาก Step 2</span>
+<span class="key">LINE_CHANNEL_SECRET</span>       = <span class="val">ใส่ secret ที่ copy จาก Step 2</span>
+<span class="key">SN_COLUMN</span>                 = <span class="val">SN</span>   <span class="comment"># ← เปลี่ยนให้ตรง header ของไฟล์</span>
+<span class="key">EXCEL_FILE</span>                = <span class="val">438_Unit.xlsx</span></pre>
+      <div class="success-note">✅ Railway จะ restart bot ให้อัตโนมัติหลังบันทึก</div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step">
+      <div class="step-dot done">5</div>
+      <h2>🔗 ตั้งค่า Webhook ใน LINE</h2>
+      <p>หลัง deploy สำเร็จ Railway จะให้ URL เช่น:</p>
+      <div class="url-box">https://your-app-name.up.railway.app</div>
+      <p style="margin-top:.75rem;">กลับไป LINE Developers → แท็บ <strong>Messaging API</strong>:</p>
+      <ol>
+        <li>Webhook URL → ใส่ <code>https://your-app-name.up.railway.app/webhook</code></li>
+        <li>กด <strong>Verify</strong> → ต้องขึ้น "Success"</li>
+        <li>เปิด <strong>Use webhook</strong> → ON</li>
+        <li>ปิด <strong>Auto-reply messages</strong> → OFF</li>
+      </ol>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step">
+      <div class="step-dot done">6</div>
+      <h2>✅ ทดสอบ Bot</h2>
+      <p>เพิ่ม bot เป็นเพื่อนใน LINE (QR code อยู่ใน LINE Developers) แล้วพิม SN ส่งไป:</p>
+      <pre><span class="comment"># ถ้า SN อยู่ในไฟล์:</span>
+<span class="green">⚠️ SN: ABC123456
+Status: need controller replacement</span>
+
+<span class="comment"># ถ้า SN ไม่อยู่ในไฟล์:</span>
+<span class="green">✅ SN: XYZ999
+ไม่พบในรายการ — ปกติ</span></pre>
+    </div>
+
+    <!-- BONUS -->
+    <div class="step">
+      <div class="step-dot">★</div>
+      <h2>🔄 อัปเดตข้อมูล SN ทีหลัง</h2>
+      <p>ถ้าไฟล์ Excel มีการเพิ่ม/ลบ SN ทีหลัง มี 2 วิธี:</p>
+      <ol>
+        <li><strong>Push ไฟล์ใหม่ขึ้น GitHub</strong> → Railway rebuild อัตโนมัติ (แนะนำ)</li>
+        <li>เรียก URL <code>/reload</code> เพื่อ reload ข้อมูลโดยไม่ restart</li>
+      </ol>
+    </div>
+
+  </div>
+
+  <div class="final">
+    <h3>🎉 เสร็จแล้ว!</h3>
+    <p>พิม SN ใน LINE → Bot เช็คจาก Excel → ตอบกลับทันที<br>
+    ถ้าติดปัญหาขั้นตอนไหน บอกได้เลยครับ</p>
+  </div>
+
+</div>
+</body>
+</html>
