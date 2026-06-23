@@ -14,7 +14,7 @@ app = Flask(__name__)
 CHANNEL_ACCESS_TOKEN = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN", "")
 CHANNEL_SECRET = os.environ.get("LINE_CHANNEL_SECRET", "")
 EXCEL_FILE = "Controller_MC2900_438Unit_need replacement.xlsx"
-SN_COLUMN = "Total"
+SN_COLUMN = "check SN"
 
 configuration = Configuration(access_token=CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
