@@ -14,7 +14,7 @@ app = Flask(__name__)
 CHANNEL_ACCESS_TOKEN = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN", "")
 CHANNEL_SECRET = os.environ.get("LINE_CHANNEL_SECRET", "")
 EXCEL_FILE = "Controller_MC2900_438Unit_need replacement.xlsx"
-SN_COLUMN = "SN"
+SN_COLUMN = "Total"
 
 configuration = Configuration(access_token=CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(CHANNEL_SECRET)
@@ -52,12 +52,17 @@ def webhook():
 
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
-    user_text = event.message.text.strip().upper()
+    user_text = event.message.text.strip()
 
-    if user_text in SN_SET:
-        reply = f"⚠️ SN: {event.message.text.strip()}\nStatus: Need Controller Replacement"
+    if user_text.lower().startswith("-check "):
+        sn = user_text[7:].strip().upper()
+
+        if sn in SN_SET:
+            reply = f"⚠️ SN: {sn}\nStatus: Need Controller Replacement"
+        else:
+            reply = f"✅ SN: {sn}\nStatus: No Need Replacement\n\nรบกวนพี่ๆทดสอบการใช้งานหน้างานของ Controller ด้วยนะคะ"
     else:
-        reply = f"✅ SN: {event.message.text.strip()}\nStatus: NO Need Replacement (รบกวนพี่ๆทดสอบการใช้งานหน้างานของ Controller ด้วยนะคะ)"
+        return
 
     with ApiClient(configuration) as api_client:
         line_bot_api = MessagingApi(api_client)
