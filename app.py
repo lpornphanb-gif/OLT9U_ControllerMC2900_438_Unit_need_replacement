@@ -13,7 +13,7 @@ app = Flask(__name__)
 
 CHANNEL_ACCESS_TOKEN = os.environ.get("LINE_CHANNEL_ACCESS_TOKEN", "")
 CHANNEL_SECRET = os.environ.get("LINE_CHANNEL_SECRET", "")
-EXCEL_FILE = "Controller_MC2900_438Unit_need replacement.xlsx"
+EXCEL_FILE = "OLT9U_ControllerMC2900_438_Unit_need_replacement.xlsx"
 SN_COLUMN = "check SN"
 
 configuration = Configuration(access_token=CHANNEL_ACCESS_TOKEN)
